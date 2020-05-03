@@ -32,6 +32,7 @@ singleTagItem.on('click', function (e) {
                     var html = `
                         <div class="iqlasit-single-post-item">
                             <h1>${response[i].title}</h1>
+                            <p>${response[i].content}</p>
                         </div> <!-- end single-post-item -->
                     `
                     $(postsWrapper).removeClass('loading');
