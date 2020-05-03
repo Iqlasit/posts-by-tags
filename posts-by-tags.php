@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Posts by Tags
-Plugin URI: http://iqlasit.com
+Plugin URI: https://github.com/Iqlasit/posts-by-tags
 Description: Posts by Tags plugin will display all posts
 Version: 1.0.0
 Author: Iqlasit
@@ -13,7 +13,7 @@ Text Domain: iqlasit-posts-by-tags
 // Include the widget file
 include( plugin_dir_path( __FILE__ ) . "widget-file.php");
 
-
+// Enqueueing assets
 add_action( 'wp_enqueue_scripts', function () {
     wp_register_style( 'iqlasit-pbtgs-ajax-css', plugin_dir_url( __FILE__ ) . "assets/css/style.css", null, time() );
     wp_register_script( 'iqlasit-pbtgs-ajax-js', plugin_dir_url( __FILE__ ) . "assets/js/main.js", array( 'jquery' ), time(), true );
@@ -27,23 +27,10 @@ add_action( 'wp_enqueue_scripts', function () {
 
 } );
 
+// Ajax function
 function iqlasit_ajax_func() {
     $tag_ids = $_REQUEST['tag_ids'];
-    // if ( false === get_transient( 'iqlasit_tag_ids' ) ) {
-    //     $iqlasit_tag_ids = array_unique( $tag_ids );
-    //     set_transient( 'iqlasit_tag_ids', $iqlasit_tag_ids );
-    // } else {
-    //     $tagid_transient = get_transient( 'iqlasit_tag_ids' );
-    //     $all_tag_ids     = array_push( $tagid_transient, $tag_ids );
-    //     $iqlasit_tag_ids = array_unique( $all_tag_ids );
-    //     // delete_transient( 'iqlasit_tag_ids' );
-    //     set_transient( 'iqlasit_tag_ids', $iqlasit_tag_ids );
-    // }
-
-    $tagid_transient = get_transient( 'iqlasit_tag_ids' );
-    $all_tag_ids     = array_push( $tagid_transient, $tag_ids );
-    $iqlasit_tag_ids = array_unique( $all_tag_ids );
-    set_transient( 'iqlasit_tag_ids', $iqlasit_tag_ids );
+    set_transient( 'iqlasit_tag_ids', $tag_ids );
 
     $query_args = array(
         'post_type'      => 'post',
@@ -57,7 +44,7 @@ function iqlasit_ajax_func() {
     $result[] = array(
         'id'                => get_the_ID(),
         'title'             => get_the_title(),
-        'permalink'         => get_permalink(),
+        'content'           => get_the_excerpt(),
     );
     endwhile;
     wp_reset_postdata();
@@ -79,7 +66,6 @@ function iqlasit_posts_by_tags_shortcode( $atts ) {
     } else {
         $iqlasit_tag_ids = get_transient( 'iqlasit_tag_ids' );
     }
-    // delete_transient('iqlasit_tag_ids');
     
     $query_args = array(
         'post_type'      => $post_type,
@@ -90,7 +76,8 @@ function iqlasit_posts_by_tags_shortcode( $atts ) {
     echo '<div class="iqlasit-posts-by-tags-wrapper">';
     while($custom_query->have_posts()) : $custom_query->the_post();?>
         <div class="iqlasit-single-post-item">
-            <h1><?php echo the_title() . get_transient( 'iqlasit_tag_ids' );?> </h1>
+            <h1><?php echo the_title();?></h1>
+            <?php echo the_excerpt();?>
         </div>
         <?php
     endwhile;
