@@ -1,0 +1,22 @@
+
+.iqlasit-posts-by-tags-wrapper.loading::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: block;
+    z-index: 99;
+    background: #fff url(../images/loader.gif);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.iqlasit-posts-by-tags-wrapper {
+    position: relative;
+    min-height: 200px;
+}
+
+.iqlasit-tag-list .single-tag
+{
+    cursor: pointer;
+}
