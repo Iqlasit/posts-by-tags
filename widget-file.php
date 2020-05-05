@@ -33,11 +33,10 @@ class Iqlasit_Posts_by_tags extends WP_Widget {
 
         $tags = get_tags(array());
         
-        $tag_page_url = admin_url( 'edit-tags.php?taxonomy=post_tag' );
         $output .= '<ul class="iqlasit-tag-list">';
             if($tags) {
             foreach ($tags as $tag):
-            $output .= '<li><span class="single-tag" data-tagid="'. $tag->term_id .'">'. $tag->name .'</span></li>';
+            $output .= '<li><span class="single-tag" data-tagid="'. esc_attr($tag->term_id) .'">'. esc_attr($tag->name) .'</span></li>';
             endforeach;
             } else {
             _e('No tags created yet!', 'iqlasit-posts-by-tags');

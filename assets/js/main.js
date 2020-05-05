@@ -7,7 +7,6 @@ singleTagItem.on('click', function (e) {
     e.preventDefault();
     var tagId = $(this).data('tagid');
         tag_ids.push( tagId );
-        console.log(tag_ids);
 
     var data = {
         action: "iqlasit_tag_info",

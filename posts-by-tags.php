@@ -29,7 +29,8 @@ add_action( 'wp_enqueue_scripts', function () {
 
 // Ajax function
 function iqlasit_ajax_func() {
-    $tag_ids = $_REQUEST['tag_ids'];
+    $tag_ids = isset( $_REQUEST['tag_ids'] ) ? (array) $_REQUEST['tag_ids'] : array();
+    $tag_ids = array_map( 'intval', $tag_ids );
     set_transient( 'iqlasit_tag_ids', $tag_ids );
 
     $query_args = array(
@@ -69,7 +70,7 @@ function iqlasit_posts_by_tags_shortcode( $atts ) {
     
     $query_args = array(
         'post_type'      => $post_type,
-        'posts_per_page' => $posts_per_page,
+        'posts_per_page' => intval($posts_per_page),
         'tag__in'        => $iqlasit_tag_ids,
     );
     $custom_query = new WP_Query( $query_args );
