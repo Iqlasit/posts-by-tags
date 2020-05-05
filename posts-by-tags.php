@@ -69,7 +69,7 @@ function iqlasit_posts_by_tags_shortcode( $atts ) {
     }
     
     $query_args = array(
-        'post_type'      => $post_type,
+        'post_type'      => sanitize_text_field($post_type),
         'posts_per_page' => intval($posts_per_page),
         'tag__in'        => $iqlasit_tag_ids,
     );
